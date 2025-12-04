@@ -1,0 +1,11 @@
+{
+    "weapon.primal.name": "聚能山竹",
+    "weapon.primal.description": "生成电圈攻击周围敌人并使其麻痹。右键: 召唤闪电 (CD: 60秒)",
+    "weapon.primal.tooltip.damage": "伤害: {0}",
+    "weapon.primal.tooltip.range": "范围: {0}x{0}",
+    "weapon.primal.tooltip.cooldown": "冷却: {0}秒",
+    "weapon.primal.tooltip.paralyze": "麻痹: {0}秒",
+    "weapon.primal.tooltip.ultimate": "右键: 召唤闪电 (CD: {0}秒)",
+    "weapon.primal.ultimate.ready": "大招已就绪！",
+    "weapon.primal.ultimate.cooldown": "大招冷却: {0}秒"
+}

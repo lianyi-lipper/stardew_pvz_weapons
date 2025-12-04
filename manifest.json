@@ -1,0 +1,10 @@
+{
+    "Name": "Stardew PvZ Weapons",
+    "Author": "lianyi-lipper",
+    "Version": "0.1.0",
+    "Description": "Adds Primal Mangosteen weapon inspired by Plants vs Zombies 2",
+    "UniqueID": "lianyi-lipper.StardewPvZWeapons",
+    "EntryDll": "StardewPvZWeapons.dll",
+    "MinimumApiVersion": "3.14.0",
+    "UpdateKeys": []
+}

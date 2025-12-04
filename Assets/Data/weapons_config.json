@@ -1,0 +1,34 @@
+{
+    "PrimalMangosteen": {
+        "baseDamage": 70,
+        "attackRange": 3,
+        "cooldownTime": 2.0,
+        "paralyzeChance": 1.0,
+        "paralyzeDuration": 1.0,
+        "electricRing": {
+            "expandDuration": 0.25,
+            "sustainDuration": 0.1,
+            "fadeDuration": 0.15,
+            "damageCheckInterval": 0.05
+        },
+        "ultimateAbility": {
+            "range": 5,
+            "damage": 200,
+            "cooldown": 60.0
+        }
+    },
+    "ElectricGatlingPea": {
+        "baseDamage": 50,
+        "projectileSpeed": 12,
+        "fireRate": 2.0,
+        "projectilesPerShot": 4,
+        "attackRange": 15,
+        "ultimateTriggerChance": 0.3,
+        "ultimateProjectileCount": 210,
+        "ultimateDuration": 1.5,
+        "spreadAngle": 15.0,
+        "bulletInterval": 0.1,
+        "ultimateDamageMultiplier": 1.5,
+        "stunDuration": 1500.0
+    }
+}

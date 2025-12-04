@@ -1,0 +1,15 @@
+{
+    "lianyi-lipper.StardewPvZWeapons_PrimalMangosteen": {
+        "DisplayName": "聚能山竹",
+        "Description": "佩戴后自动攻击附近敌人，按C键释放闪电大招。",
+        "Texture": "Mods/lianyi-lipper.StardewPvZWeapons/Trinkets",
+        "SpriteIndex": 0,
+        "TrinketEffectClass": "StardewPvZWeapons.Domain.Effects.PrimalMangosteenEffect, StardewPvZWeapons",
+        "DropsNaturally": false,
+        "CanBeReforged": false,
+        "CustomFields": {
+            "Mod_Id": "lianyi-lipper.StardewPvZWeapons",
+            "Weapon_Type": "Electric"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "weapon.primal.name": "Primal Mangosteen",
+    "weapon.primal.description": "Generates electric rings to attack nearby enemies and paralyze them.Right-click: Summon Lightning (CD: 60s)",
+    "weapon.primal.tooltip.damage": "Damage: {0}",
+    "weapon.primal.tooltip.range": "Range: {0}x{0}",
+    "weapon.primal.tooltip.cooldown": "Cooldown: {0}s",
+    "weapon.primal.tooltip.paralyze": "Paralyze: {0}s",
+    "weapon.primal.tooltip.ultimate": "Right-click: Lightning Strike (CD: {0}s)",
+    "weapon.primal.ultimate.ready": "Ultimate Ready!",
+    "weapon.primal.ultimate.cooldown": "Ultimate: {0}s"
+}
