@@ -41,7 +41,7 @@ namespace StardewPvZWeapons.Data
                 }
                 else
                 {
-                    _monitor.Log("✅ 武器配置加载成功", LogLevel.Info);
+                    _monitor.Log("Weapon config loaded successfully", LogLevel.Trace);
                     LogConfigValues();
                 }
 
@@ -49,7 +49,7 @@ namespace StardewPvZWeapons.Data
             }
             catch (Exception ex)
             {
-                _monitor.Log($"❌ 加载配置文件失败: {ex.Message}", LogLevel.Error);
+                _monitor.Log($"加载配置文件失败: {ex.Message}", LogLevel.Error);
                 return CreateDefaultConfig();
             }
         }
@@ -93,12 +93,12 @@ namespace StardewPvZWeapons.Data
             if (_config?.PrimalMangosteen == null) return;
 
             var pm = _config.PrimalMangosteen;
-            _monitor.Log($"  聚能山竹配置:", LogLevel.Debug);
-            _monitor.Log($"    基础伤害: {pm.BaseDamage}", LogLevel.Debug);
-            _monitor.Log($"    攻击范围: {pm.AttackRange}", LogLevel.Debug);
-            _monitor.Log($"    冷却时间: {pm.CooldownTime}s", LogLevel.Debug);
-            _monitor.Log($"    大招伤害: {pm.UltimateAbility?.Damage}", LogLevel.Debug);
-            _monitor.Log($"    大招冷却: {pm.UltimateAbility?.Cooldown}s", LogLevel.Debug);
+            _monitor.Log($"  PrimalMangosteen config:", LogLevel.Trace);
+            _monitor.Log($"    BaseDamage: {pm.BaseDamage}", LogLevel.Trace);
+            _monitor.Log($"    AttackRange: {pm.AttackRange}", LogLevel.Trace);
+            _monitor.Log($"    CooldownTime: {pm.CooldownTime}s", LogLevel.Trace);
+            _monitor.Log($"    UltimateDamage: {pm.UltimateAbility?.Damage}", LogLevel.Trace);
+            _monitor.Log($"    UltimateCooldown: {pm.UltimateAbility?.Cooldown}s", LogLevel.Trace);
         }
 
         /// <summary>

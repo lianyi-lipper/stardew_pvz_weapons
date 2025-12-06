@@ -37,14 +37,21 @@ namespace StardewPvZWeapons.Integration
         /// </summary>
         public void Initialize()
         {
-            // 注册控制台指令
+            // 注册控制台指令 - 直接给予
             _helper.ConsoleCommands.Add(
                 name: "pvz_give_weapon",
-                documentation: "给予PvZ武器。用法: pvz_give_weapon <weapon_name>\n可用武器: primal_mangosteen",
+                documentation: "给予PvZ武器（调试用）。用法: pvz_give_weapon <weapon_name>\n可用武器: primal_mangosteen, electric_gatling_pea",
                 callback: OnConsoleCommand
             );
 
-            _monitor.Log("武器注册系统已初始化", LogLevel.Debug);
+            // 注册控制台指令 - 合成（消耗材料）
+            _helper.ConsoleCommands.Add(
+                name: "pvz_craft",
+                documentation: "使用材料合成PvZ武器。用法: pvz_craft <weapon_name>\n可用配方: electric_gatling_pea (电池组x5 + 铱锭x10)",
+                callback: OnCraftCommand
+            );
+
+            _monitor.Log("Weapon registry initialized", LogLevel.Trace);
         }
 
         /// <summary>
@@ -93,6 +100,117 @@ namespace StardewPvZWeapons.Integration
         }
 
         /// <summary>
+        /// 合成命令回调
+        /// </summary>
+        private void OnCraftCommand(string command, string[] args)
+        {
+            if (!Context.IsWorldReady)
+            {
+                _monitor.Log("错误：必须在游戏加载后使用此命令", LogLevel.Error);
+                return;
+            }
+
+            if (args.Length == 0)
+            {
+                _monitor.Log("用法: pvz_craft <weapon_name>", LogLevel.Info);
+                _monitor.Log("可用配方:", LogLevel.Info);
+                _monitor.Log("  - electric_gatling_pea (电池组x5 + 铱锭x10)", LogLevel.Info);
+                return;
+            }
+
+            string weaponName = args[0].ToLower();
+
+            switch (weaponName)
+            {
+                case "electric_gatling_pea":
+                case "gatling":
+                case "机枪":
+                    CraftElectricGatlingPea();
+                    break;
+
+                default:
+                    _monitor.Log($"未知的配方: {weaponName}", LogLevel.Error);
+                    _monitor.Log("可用配方: electric_gatling_pea", LogLevel.Info);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 合成电能超级机枪射手（消耗材料）
+        /// 配方: 电池组(787) x5 + 铱锭(337) x10
+        /// </summary>
+        private void CraftElectricGatlingPea()
+        {
+            var player = Game1.player;
+            if (player == null)
+            {
+                _monitor.Log("错误：无法找到玩家", LogLevel.Error);
+                return;
+            }
+
+            // 检查材料
+            const string BATTERY_PACK_ID = "787";  // 电池组
+            const string IRIDIUM_BAR_ID = "337";   // 铱锭
+            const int BATTERY_REQUIRED = 5;
+            const int IRIDIUM_REQUIRED = 10;
+
+            int batteryCount = 0;
+            int iridiumCount = 0;
+
+            // 统计背包中的材料数量
+            foreach (var item in player.Items)
+            {
+                if (item != null)
+                {
+                    if (item.ItemId == BATTERY_PACK_ID)
+                        batteryCount += item.Stack;
+                    else if (item.ItemId == IRIDIUM_BAR_ID)
+                        iridiumCount += item.Stack;
+                }
+            }
+
+            // 检查材料是否足够
+            if (batteryCount < BATTERY_REQUIRED || iridiumCount < IRIDIUM_REQUIRED)
+            {
+                _monitor.Log($"材料不足！需要: 电池组x{BATTERY_REQUIRED}, 铱锭x{IRIDIUM_REQUIRED}", LogLevel.Warn);
+                _monitor.Log($"当前拥有: 电池组x{batteryCount}, 铱锭x{iridiumCount}", LogLevel.Info);
+                Game1.addHUDMessage(new HUDMessage(string.Format(_helper.Translation.Get("hud.materials-insufficient"), BATTERY_REQUIRED, IRIDIUM_REQUIRED), 3));
+                return;
+            }
+
+            // 消耗材料
+            int batteryToRemove = BATTERY_REQUIRED;
+            int iridiumToRemove = IRIDIUM_REQUIRED;
+
+            for (int i = 0; i < player.Items.Count && (batteryToRemove > 0 || iridiumToRemove > 0); i++)
+            {
+                var item = player.Items[i];
+                if (item == null) continue;
+
+                if (item.ItemId == BATTERY_PACK_ID && batteryToRemove > 0)
+                {
+                    int remove = Math.Min(item.Stack, batteryToRemove);
+                    item.Stack -= remove;
+                    batteryToRemove -= remove;
+                    if (item.Stack <= 0)
+                        player.Items[i] = null;
+                }
+                else if (item.ItemId == IRIDIUM_BAR_ID && iridiumToRemove > 0)
+                {
+                    int remove = Math.Min(item.Stack, iridiumToRemove);
+                    item.Stack -= remove;
+                    iridiumToRemove -= remove;
+                    if (item.Stack <= 0)
+                        player.Items[i] = null;
+                }
+            }
+
+            // 给予武器
+            GiveElectricGatlingPea();
+            _monitor.Log("Crafting success! Consumed Battery x5 and Iridium Bar x10", LogLevel.Trace);
+        }
+
+        /// <summary>
         /// 给予玩家聚能山竹饰品
         /// </summary>
         private void GivePrimalMangosteen()
@@ -126,13 +244,13 @@ namespace StardewPvZWeapons.Integration
                     _monitor.Log("提示：打开背包，将饰品拖到饰品栏装备", LogLevel.Info);
                     
                     // 在游戏中显示提示
-                    Game1.addHUDMessage(new HUDMessage($"获得：{trinket.DisplayName}", 2));
-                    Game1.addHUDMessage(new HUDMessage("装备到饰品栏即可使用", 1));
+                    Game1.addHUDMessage(new HUDMessage(string.Format(_helper.Translation.Get("hud.trinket.obtained"), trinket.DisplayName), 2));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("hud.trinket.equip-hint"), 1));
                 }
                 else
                 {
                     _monitor.Log("背包已满，无法添加饰品", LogLevel.Warn);
-                    Game1.addHUDMessage(new HUDMessage("背包已满！", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("hud.inventory-full"), 3));
                 }
             }
             catch (Exception ex)
@@ -170,13 +288,13 @@ namespace StardewPvZWeapons.Integration
                     _monitor.Log("提示：选中武器，左键攻击，右键触发大招", LogLevel.Info);
                     
                     // 在游戏中显示提示
-                    Game1.addHUDMessage(new HUDMessage("获得：电能超级机枪射手", 2));
-                    Game1.addHUDMessage(new HUDMessage("左键攻击，右键大招", 1));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("weapon.electric-gatling-pea.craft.success"), 2));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("weapon.electric-gatling-pea.craft.hint"), 1));
                 }
                 else
                 {
                     _monitor.Log("背包已满，无法添加武器", LogLevel.Warn);
-                    Game1.addHUDMessage(new HUDMessage("背包已满！", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("hud.inventory-full"), 3));
                 }
             }
             catch (Exception ex)

@@ -22,13 +22,14 @@
         "projectileSpeed": 12,
         "fireRate": 2.0,
         "projectilesPerShot": 4,
-        "attackRange": 15,
+        "attackRange": 30,
         "ultimateTriggerChance": 0.3,
         "ultimateProjectileCount": 210,
         "ultimateDuration": 1.5,
         "spreadAngle": 15.0,
         "bulletInterval": 0.1,
         "ultimateDamageMultiplier": 1.5,
-        "stunDuration": 1500.0
+        "stunDuration": 1500.0,
+        "largeBulletRatio": 0.3
     }
 }

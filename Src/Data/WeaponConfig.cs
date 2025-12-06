@@ -171,5 +171,10 @@ namespace StardewPvZWeapons.Data
         /// 眩晕持续时间（毫秒）
         /// </summary>
         public float StunDuration { get; set; } = 1500f;
+
+        /// <summary>
+        /// 大子弹发射比例（0-1），剩余为小子弹
+        /// </summary>
+        public float LargeBulletRatio { get; set; } = 0.3f;
     }
 }

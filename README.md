@@ -4,7 +4,7 @@
 
 ## 功能特性
 
-### ⚡ 聚能山竹 (Primal Mangosteen)
+### 聚能山竹 (Primal Mangosteen)
 
 电系近战武器，基于PvZ2原版机制设计：
 
@@ -12,6 +12,15 @@
 - **大招**：召唤5×5闪电电圈，造成200伤害（右键触发，CD 60秒）
 - **冷却机制**：普攻2秒CD，防止无限连发
 - **附魔支持**：兼容星露谷原生附魔系统（十字军、猛击等）
+
+### 电能超级机枪射手 (Electric Gatling Pea)
+
+电系远程弹弓武器，灵感来自PvZ2的机枪射手：
+
+- **连射攻击**：每次发射4枚穿透电能子弹，造成50伤害并眩晕敌人
+- **破坏模式**：按V键切换，可破坏树木、岩石等障碍物
+- **终极技能**：30%几率触发电能爆发，持续1.5秒发射210枚子弹
+- **穿透特性**：子弹可穿透多个敌人和障碍物
 
 ## 快速开始
 
@@ -27,31 +36,8 @@
 
 ```
 pvz_give_weapon primal_mangosteen
+pvz_give_weapon electric_gatling_pea
 ```
-
-详细测试指南见 [TESTING.md](file:///e:/work/StardewPvZWeapons/TESTING.md)
-
-## 开发状态
-
-**当前版本**: v0.1.0-alpha
-
-### ✅ 已实现
-
-- [x] 聚能山竹核心逻辑
-- [x] 电圈扩散特效（逻辑）
-- [x] 麻痹效果
-- [x] 右键大招
-- [x] 冷却系统
-- [x] 控制台指令
-- [x] 中英文本地化
-
-### ⏳ 待实现
-
-- [ ] 电圈视觉渲染
-- [ ] 闪电视觉特效
-- [ ] 击杀音效
-- [ ] 制作配方
-- [ ] 更多PvZ武器
 
 ## 技术架构
 
@@ -60,20 +46,12 @@ pvz_give_weapon primal_mangosteen
 ```
 Src/
 ├── Domain/          # 武器和特效逻辑
-│   ├── Weapons/     # 武器类
-│   └── Effects/     # 特效类
-├── Services/        # 特效管理器
-├── Integration/     # 游戏集成
+│   ├── Weapons/     # 武器类（弹射物等）
+│   └── Effects/     # 特效类（电圈、闪电等）
+├── Services/        # 武器管理器
+├── Integration/     # 游戏集成（Harmony补丁）
 └── ModEntry.cs      # SMAPI入口
 ```
-
-详见 [walkthrough.md](file:///C:/Users/19663/.gemini/antigravity/brain/46fbd18f-53e7-4dc4-b009-fda1435dda92/walkthrough.md)
-
-## 开发文档
-
-- [实施计划](file:///C:/Users/19663/.gemini/antigravity/brain/46fbd18f-53e7-4dc4-b009-fda1435dda92/implementation_plan.md)
-- [设计规格](file:///C:/Users/19663/.gemini/antigravity/brain/46fbd18f-53e7-4dc4-b009-fda1435dda92/primal_mangosteen_spec.md)
-- [开发进度](file:///C:/Users/19663/.gemini/antigravity/brain/46fbd18f-53e7-4dc4-b009-fda1435dda92/task.md)
 
 ## 依赖项
 
@@ -90,3 +68,4 @@ Src/
 - 星露谷物语 - ConcernedApe
 - 植物大战僵尸2 - EA/PopCap
 - SMAPI - Pathoschild
+- 武器与子弹贴图 - 青轴

@@ -58,7 +58,7 @@ namespace StardewPvZWeapons.Domain.Weapons
                     who: this.theOneWhoFiredMe.Get(location) as Farmer
                 );
 
-                // ⚡ 眩晕效果（不是击退）
+                // 眩晕效果（不是击退）
                 monster.stunTime.Value = (int)_stunDuration;
                 
                 // 可选：添加视觉效果（星星绕头）

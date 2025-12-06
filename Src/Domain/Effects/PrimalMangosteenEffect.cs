@@ -60,7 +60,7 @@ namespace StardewPvZWeapons.Domain.Effects
             
             StardewPvZWeapons.ModEntry.Instance?.Monitor.Log(
                 "PrimalMangosteenEffect: Parameterless constructor called", 
-                StardewModdingAPI.LogLevel.Debug);
+                StardewModdingAPI.LogLevel.Trace);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace StardewPvZWeapons.Domain.Effects
             
             StardewPvZWeapons.ModEntry.Instance?.Monitor.Log(
                 $"PrimalMangosteenEffect: Constructor with Trinket called. Trinket: {trinket?.Name}", 
-                StardewModdingAPI.LogLevel.Debug);
+                StardewModdingAPI.LogLevel.Trace);
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace StardewPvZWeapons.Domain.Effects
             _isConfigured = true;
 
             StardewPvZWeapons.ModEntry.Instance?.Monitor.Log(
-                $"✅ PrimalMangosteenEffect 配置已加载: 伤害={config.BaseDamage}, 范围={config.AttackRange}", 
-                StardewModdingAPI.LogLevel.Debug);
+                $"PrimalMangosteenEffect 配置已加载: 伤害={config.BaseDamage}, 范围={config.AttackRange}", 
+                StardewModdingAPI.LogLevel.Trace);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace StardewPvZWeapons.Domain.Effects
                     if (distance <= _autoAttackRadius)
                     {
                         foundEnemy = true;
-                        StardewPvZWeapons.ModEntry.Instance?.Monitor.Log($"Target acquired: {monster.Name} at distance {distance}", StardewModdingAPI.LogLevel.Debug);
+                        StardewPvZWeapons.ModEntry.Instance?.Monitor.Log($"Target acquired: {monster.Name} at distance {distance}", StardewModdingAPI.LogLevel.Trace);
                         break;
                     }
                 }
@@ -245,7 +245,7 @@ namespace StardewPvZWeapons.Domain.Effects
             if (_ultimateCooldownTimer > 0)
             {
                 int remainingSeconds = (int)Math.Ceiling(_ultimateCooldownTimer);
-                Game1.addHUDMessage(new HUDMessage($"大招冷却中: {remainingSeconds}秒", 3));
+                Game1.addHUDMessage(new HUDMessage(string.Format(StardewPvZWeapons.ModEntry.Instance?.Helper.Translation.Get("weapon.primal.cooldown.message") ?? "Cooling down: {0}s", remainingSeconds), 3));
                 return false;
             }
 
@@ -297,7 +297,7 @@ namespace StardewPvZWeapons.Domain.Effects
             _ultimateCooldownTimer = _config.UltimateAbility != null ? _config.UltimateAbility.Cooldown : 60.0f;
 
             // 显示成功提示
-            Game1.addHUDMessage(new HUDMessage("⚡ 召唤闪电！", 2));
+            Game1.addHUDMessage(new HUDMessage(StardewPvZWeapons.ModEntry.Instance?.Helper.Translation.Get("weapon.primal.lightning") ?? "Summon Lightning!", 2));
 
             return true;
         }
@@ -307,14 +307,15 @@ namespace StardewPvZWeapons.Domain.Effects
         /// </summary>
         public string GetExtraDescription()
         {
+            var translation = StardewPvZWeapons.ModEntry.Instance?.Helper.Translation;
             if (IsUltimateReady)
             {
-                return "\n\n按C键: 召唤闪电 (已就绪!)";
+                return translation?.Get("weapon.primal.extra.ready") ?? "\n\nPress C: Summon Lightning (Ready!)";
             }
             else
             {
                 int remainingSeconds = (int)Math.Ceiling(_ultimateCooldownTimer);
-                return $"\n\n按C键: 召唤闪电 (冷却: {remainingSeconds}秒)";
+                return string.Format(translation?.Get("weapon.primal.extra.cooldown") ?? "\n\nPress C: Summon Lightning (CD: {0}s)", remainingSeconds);
             }
         }
     }
