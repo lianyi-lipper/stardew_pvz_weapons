@@ -74,6 +74,7 @@ namespace StardewPvZWeapons
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
             helper.Events.Player.InventoryChanged += OnInventoryChanged; // 蓝图转换为武器
+            helper.Events.Content.LocaleChanged += OnLocaleChanged; // 语言切换时重新加载资产
 
             Monitor.Log("Stardew PvZ Weapons mod loaded successfully!", LogLevel.Info);
         }
@@ -127,8 +128,8 @@ namespace StardewPvZWeapons
                     data["lianyi-lipper.StardewPvZWeapons_ElectricGatlingPea"] = new StardewValley.GameData.Weapons.WeaponData
                     {
                         Name = "ElectricGatlingPea",
-                        DisplayName = "[lianyi-lipper.StardewPvZWeapons_i18n_weapon.electric-gatling-pea.name]",
-                        Description = "[lianyi-lipper.StardewPvZWeapons_i18n_weapon.electric-gatling-pea.description]",
+                        DisplayName = Helper.Translation.Get("weapon.electric-gatling-pea.name"),
+                        Description = Helper.Translation.Get("weapon.electric-gatling-pea.description"),
                         Type = 4, // 4 = Slingshot
                         Texture = "Mods/lianyi-lipper.StardewPvZWeapons/Weapons",
                         SpriteIndex = 0,
@@ -152,8 +153,8 @@ namespace StardewPvZWeapons
                     data["lianyi-lipper.StardewPvZWeapons_ElectricGatlingPea_Blueprint"] = new StardewValley.GameData.Objects.ObjectData
                     {
                         Name = "ElectricGatlingPeaBlueprint",
-                        DisplayName = "[lianyi-lipper.StardewPvZWeapons_i18n_weapon.electric-gatling-pea.blueprint.name]",
-                        Description = "[lianyi-lipper.StardewPvZWeapons_i18n_weapon.electric-gatling-pea.blueprint.description]",
+                        DisplayName = Helper.Translation.Get("weapon.electric-gatling-pea.blueprint.name"),
+                        Description = Helper.Translation.Get("weapon.electric-gatling-pea.blueprint.description"),
                         Type = "Crafting",
                         Category = -8, // Crafting
                         Price = 0,
@@ -519,6 +520,19 @@ namespace StardewPvZWeapons
                     Game1.addHUDMessage(new HUDMessage(successMessage, 2));
                 }
             }
+        }
+
+        /// <summary>
+        /// 语言切换事件
+        /// 使武器和物品数据资产失效以重新加载翻译
+        /// </summary>
+        private void OnLocaleChanged(object? sender, StardewModdingAPI.Events.LocaleChangedEventArgs e)
+        {
+            Monitor.Log($"Locale changed from {e.OldLocale} to {e.NewLocale}, invalidating assets...", LogLevel.Debug);
+            
+            // 使资产失效，触发重新加载以获取正确的翻译
+            Helper.GameContent.InvalidateCache("Data/Weapons");
+            Helper.GameContent.InvalidateCache("Data/Objects");
         }
     }
 }
